@@ -15,6 +15,8 @@
 		5ADD08E226C5504100EF404E /* Shapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADD08E126C5504100EF404E /* Shapes.swift */; };
 		5ADD08E426C5506600EF404E /* Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADD08E326C5506600EF404E /* Cards.swift */; };
 		5ADD08EA26C5566500EF404E /* BoardGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADD08E926C5566500EF404E /* BoardGameController.swift */; };
+		5ADD08ED26C55F1700EF404E /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADD08EC26C55F1700EF404E /* Card.swift */; };
+		5ADD08EF26C5608C00EF404E /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADD08EE26C5608C00EF404E /* Game.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,8 @@
 		5ADD08E126C5504100EF404E /* Shapes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shapes.swift; sourceTree = "<group>"; };
 		5ADD08E326C5506600EF404E /* Cards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cards.swift; sourceTree = "<group>"; };
 		5ADD08E926C5566500EF404E /* BoardGameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardGameController.swift; sourceTree = "<group>"; };
+		5ADD08EC26C55F1700EF404E /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		5ADD08EE26C5608C00EF404E /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +117,8 @@
 		5ADD08EB26C556AE00EF404E /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5ADD08EC26C55F1700EF404E /* Card.swift */,
+				5ADD08EE26C5608C00EF404E /* Game.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -188,6 +194,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				5ADD08EA26C5566500EF404E /* BoardGameController.swift in Sources */,
+				5ADD08ED26C55F1700EF404E /* Card.swift in Sources */,
+				5ADD08EF26C5608C00EF404E /* Game.swift in Sources */,
 				5ADD08E426C5506600EF404E /* Cards.swift in Sources */,
 				5ADD08CA26BEC93B00EF404E /* AppDelegate.swift in Sources */,
 				5ADD08CC26BEC93B00EF404E /* SceneDelegate.swift in Sources */,
