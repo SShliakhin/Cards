@@ -9,14 +9,14 @@ import UIKit
 
 class Game {
     // количество пар уникальных карточек
-    var cardCount = 0
+    var cardsCount = 0
     // массив карточек
     var cards = [Card]()
     
     // генерация массива случайных карт
-    func generatedCards() {
+    func generateCards() {
         var cards = [Card]()
-        for _ in 0...cardCount {
+        for _ in 0...cardsCount {
             let randomElement = (type: CardType.allCases.randomElement()!,
                                  color: CardColor.allCases.randomElement()!)
             cards.append(randomElement)
