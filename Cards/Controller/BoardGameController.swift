@@ -16,6 +16,22 @@ class BoardGameController: UIViewController {
     lazy var startButtonView = getStartButtonView()
     lazy var boardGameView = getBoardGameView()
     
+    // размеры карточек
+    private var cardSize: CGSize {
+        CGSize(width: 80, height: 120)
+    }
+    // предельные размеры размещения карточки
+    private var cardMaxXCoordinate: Int {
+        Int(boardGameView.frame.width - cardSize.width)
+    }
+    private var cardMaxYCoordinate: Int {
+        Int(boardGameView.frame.height - cardSize.height)
+    }
+    
+    // игральные карточки
+    var cardViews = [UIView]()
+    private var flippedCards = [UIView]()
+    
     private func getNewGame() -> Game {
         let game = Game()
         game.cardsCount = self.cardsPairsCounts
@@ -68,6 +84,76 @@ class BoardGameController: UIViewController {
         return boardView
     }
     
+    private func getCardBy(modelData: [Card]) -> [UIView] {
+        var cardViews = [UIView]()
+        let cardViewFactory = CardViewFactory()
+        for (index, modelCard) in modelData.enumerated() {
+            let cardOne = cardViewFactory.get(modelCard.type, withSize: cardSize, andColor: modelCard.color)
+            cardOne.tag = index
+            cardViews.append(cardOne)
+            let cardTwo = cardViewFactory.get(modelCard.type, withSize: cardSize, andColor: modelCard.color)
+            cardTwo.tag = index
+            cardViews.append(cardTwo)
+        }
+        // добавляем всем картам обработчик переворота
+        for card in cardViews {
+            (card as! FlippableView).flipCompletionHandler = { [self] flippedCard in
+                // переносим карточку вверх иерархии
+                flippedCard.superview?.bringSubviewToFront(flippedCard)
+                
+                // добавляем или удаляем карточку
+                if flippedCard.isFlipped {
+                    flippedCards.append(flippedCard)
+                } else {
+                    if let cardIndex = flippedCards.firstIndex(of: flippedCard) {
+                        flippedCards.remove(at: cardIndex)
+                    }
+                }
+                
+                // если перевернуто 2 карточки
+                if flippedCards.count == 2 {
+                    // получаем карточки из данных модели
+                    let firstCard = game.cards[flippedCards.first!.tag]
+                    let secondCard = game.cards[flippedCards.last!.tag]
+                    
+                    // если карточки одинаковые
+                    if game.checkCards(firstCard, secondCard) {
+                        // сперва анимировано скрываем их
+                        UIView.animate(withDuration: 0.3, animations: {
+                            flippedCards.first!.layer.opacity = 0
+                            flippedCards.last!.layer.opacity = 0
+                        // после чего удаляем из иерархии
+                        }, completion: {_ in
+                            flippedCards.first!.removeFromSuperview()
+                            flippedCards.last!.removeFromSuperview()
+                            flippedCards = []
+                        })
+                    } else {
+                        // переворачиваем карточки рубашкой вверх
+                        for card in flippedCards {
+                            (card as! FlippableView).flip()
+                        }
+                    }
+                }
+            }
+        }
+        return cardViews
+    }
+    
+    private func placeCardsOnBoard(_ cards: [UIView]) {
+        // удаляем все имеющиеся на игровом поле карточки
+        for card in cardViews {
+            card.removeFromSuperview()
+        }
+        cardViews = cards
+        for card in cardViews {
+            let randomX = Int.random(in: 0...cardMaxXCoordinate)
+            let randomY = Int.random(in: 0...cardMaxYCoordinate)
+            card.frame.origin = CGPoint(x: randomX, y: randomY)
+            boardGameView.addSubview(card)
+        }
+    }
+    
     override func loadView() {
         super.loadView()
         
@@ -81,7 +167,9 @@ class BoardGameController: UIViewController {
     
     @objc
     func startGame(_ sender: UIButton) {
-        
+        game = getNewGame()
+        let cards = getCardBy(modelData: game.cards)
+        placeCardsOnBoard(cards)
     }
 
 }
