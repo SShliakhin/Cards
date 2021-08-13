@@ -14,6 +14,7 @@ class BoardGameController: UIViewController {
     // сущность "Игра"
     lazy var game: Game = getNewGame()
     lazy var startButtonView = getStartButtonView()
+    lazy var flipButtonView = getFlipButtonView()
     lazy var boardGameView = getBoardGameView()
     
     // размеры карточек
@@ -40,7 +41,7 @@ class BoardGameController: UIViewController {
     }
     
     private func getStartButtonView() -> UIButton {
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 180, height: 50))
         
         button.center.x = view.center.x
         
@@ -57,6 +58,36 @@ class BoardGameController: UIViewController {
         
         // подключаем обработчик
         button.addTarget(nil, action: #selector(startGame(_:)), for: .touchUpInside)
+        
+        return button
+    }
+    
+    private func getFlipButtonView() -> UIButton {
+        let margin: CGFloat = 10
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        
+        button.frame.origin.x = margin
+        
+        // привязка к Safe Area, через окно приложения
+        let window = UIApplication.shared.windows[0]
+        let topPadding = window.safeAreaInsets.top
+        button.frame.origin.y = topPadding
+        
+        button.setTitle("<>", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.gray, for: .highlighted)
+        button.backgroundColor = .systemGray4
+        button.layer.cornerRadius = 10
+        
+        // подключаем обработчик
+        button.addAction(UIAction(handler: { _ in
+            let flippedCount = (self.cardViews as! [FlippableView]).filter({ $0.isFlipped }).count
+            let isFlipped = flippedCount < self.cardViews.count
+            for card in self.cardViews {
+                (card as! FlippableView).isFlipped = isFlipped
+            }
+            self.flippedCards = []
+        }), for: .touchUpInside)
         
         return button
     }
@@ -158,6 +189,7 @@ class BoardGameController: UIViewController {
         super.loadView()
         
         view.addSubview(startButtonView)
+        view.addSubview(flipButtonView)
         view.addSubview(boardGameView)
     }
     
