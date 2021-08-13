@@ -42,6 +42,38 @@ class CircleShape: CAShapeLayer, ShapeLayerProtocol {
     }
 }
 
+// создание класса круга
+class UnpaintedCircleShape: CAShapeLayer, ShapeLayerProtocol {
+    required init(size: CGSize, fillColor: CGColor) {
+        super.init()
+        // вписывыаем круг в переданные размеры
+        // радиус половина меньшей стороны
+        let radius = min(size.width, size.height) / 2
+        // центр по середине
+        let centerX = size.width / 2
+        let centerY = size.height / 2
+        
+        let path = UIBezierPath(arcCenter: CGPoint(x: centerX, y: centerY),
+                                radius: radius,
+                                startAngle: 0,
+                                endAngle: .pi * 2 ,
+                                clockwise: true)
+        path.close()
+        // инициализируем созданный путь
+        self.path = path.cgPath
+        // изменим цвет
+        self.fillColor = .none
+        // изменим цвет
+        self.strokeColor = fillColor
+        // толщина линий
+        self.lineWidth = 5
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 // создание квадрата
 class SquareShape: CAShapeLayer, ShapeLayerProtocol {
     required init(size: CGSize, fillColor: CGColor) {
