@@ -80,8 +80,10 @@ class SquareShape: CAShapeLayer, ShapeLayerProtocol {
         super.init()
         // меньшая из сторон будет стороной квадрата
         let side = min(size.width, size.height)
+        let marginX = (size.width - side) / 2
+        let marginY = (size.height - side) / 2
         
-        let path = UIBezierPath(rect: CGRect(x: 0, y: 0, width: side, height: side))
+        let path = UIBezierPath(rect: CGRect(x: marginX, y: marginY, width: side, height: side))
         path.close()
         // инициализируем созданный путь
         self.path = path.cgPath
