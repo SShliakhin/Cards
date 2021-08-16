@@ -204,6 +204,8 @@ class BoardGameController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Game"
+        view.backgroundColor = .lightGray
     }
     
     @objc

@@ -17,6 +17,8 @@
 		5ADD08ED26C55F1700EF404E /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADD08EC26C55F1700EF404E /* Card.swift */; };
 		5ADD08EF26C5608C00EF404E /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADD08EE26C5608C00EF404E /* Game.swift */; };
 		5ADD08F326C5AFA500EF404E /* CardViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADD08F226C5AFA500EF404E /* CardViewFactory.swift */; };
+		5ADD08F526C93E8F00EF404E /* StartController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADD08F426C93E8F00EF404E /* StartController.swift */; };
+		5ADD08F726C96BD300EF404E /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADD08F626C96BD300EF404E /* SettingsController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,8 @@
 		5ADD08EC26C55F1700EF404E /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		5ADD08EE26C5608C00EF404E /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		5ADD08F226C5AFA500EF404E /* CardViewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewFactory.swift; sourceTree = "<group>"; };
+		5ADD08F426C93E8F00EF404E /* StartController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartController.swift; sourceTree = "<group>"; };
+		5ADD08F626C96BD300EF404E /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +114,8 @@
 			isa = PBXGroup;
 			children = (
 				5ADD08E926C5566500EF404E /* BoardGameController.swift */,
+				5ADD08F426C93E8F00EF404E /* StartController.swift */,
+				5ADD08F626C96BD300EF404E /* SettingsController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -210,9 +216,11 @@
 			files = (
 				5ADD08EA26C5566500EF404E /* BoardGameController.swift in Sources */,
 				5ADD08ED26C55F1700EF404E /* Card.swift in Sources */,
+				5ADD08F526C93E8F00EF404E /* StartController.swift in Sources */,
 				5ADD08EF26C5608C00EF404E /* Game.swift in Sources */,
 				5ADD08E426C5506600EF404E /* Cards.swift in Sources */,
 				5ADD08CA26BEC93B00EF404E /* AppDelegate.swift in Sources */,
+				5ADD08F726C96BD300EF404E /* SettingsController.swift in Sources */,
 				5ADD08F326C5AFA500EF404E /* CardViewFactory.swift in Sources */,
 				5ADD08CC26BEC93B00EF404E /* SceneDelegate.swift in Sources */,
 				5ADD08E226C5504100EF404E /* Shapes.swift in Sources */,
