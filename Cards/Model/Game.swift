@@ -12,6 +12,8 @@ class Game {
     var cardsCount = 0
     // массив карточек
     var cards = [Card]()
+    // количество переворотов
+    var flipsCount = 0
     
     // генерация массива случайных карт
     func generateCards() {

@@ -35,13 +35,18 @@ class StartController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Main screen"
+        title = "Cards"
         startButtonView.addAction(UIAction(handler: {_ in
             self.navigationController?.pushViewController(BoardGameController(), animated: true)
         }), for: .touchUpInside)
         settingsButtonView.addAction(UIAction(handler: {_ in
             self.navigationController?.pushViewController(SettingsController(), animated: true)
         }), for: .touchUpInside)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     // MARK: -  Custom methods

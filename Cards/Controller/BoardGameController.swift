@@ -11,10 +11,17 @@ class BoardGameController: UIViewController {
 
     // количество пар уникальных карточек
     var cardsPairsCounts = 8
+    // количество переворотов
+    lazy var flipsCount = 0 {
+        didSet {
+            game.flipsCount = flipsCount
+            title = "Flips: \(flipsCount)"
+        }
+    }
     // сущность "Игра"
     lazy var game: Game = getNewGame()
-    lazy var startButtonView = getStartButtonView()
-    lazy var flipButtonView = getFlipButtonView()
+    //lazy var startButtonView = getStartButtonView()
+    //lazy var flipButtonView = getFlipButtonView()
     lazy var boardGameView = getBoardGameView()
     
     // размеры карточек
@@ -100,7 +107,9 @@ class BoardGameController: UIViewController {
         boardView.frame.origin.x = margin
         let window = UIApplication.shared.windows[0]
         let topPadding = window.safeAreaInsets.top
-        boardView.frame.origin.y = topPadding + startButtonView.frame.height + margin
+        //boardView.frame.origin.y = topPadding + startButtonView.frame.height + margin
+        boardView.frame.origin.y = //view.safeAreaInsets.top + margin
+            topPadding + (navigationController?.navigationBar.frame.height ?? 0) / 2 + margin
         
         // расчет ширины
         boardView.frame.size.width = UIScreen.main.bounds.width - margin * 2
@@ -110,7 +119,8 @@ class BoardGameController: UIViewController {
         
         // стиль игрового поля
         boardView.layer.cornerRadius = 5
-        boardView.backgroundColor = UIColor(red: 0.1, green: 0.9, blue: 0.1, alpha: 0.3)
+        //boardView.backgroundColor = UIColor(red: 0.1, green: 0.9, blue: 0.1, alpha: 0.3)
+        boardView.backgroundColor = .brown
         
         return boardView
     }
@@ -119,6 +129,7 @@ class BoardGameController: UIViewController {
         // добавляем или удаляем карточку
         if card.isFlipped {
             flippedCards.append(card)
+            flipsCount += 1
         } else {
             if let cardIndex = flippedCards.firstIndex(of: card) {
                 flippedCards.remove(at: cardIndex)
@@ -144,6 +155,8 @@ class BoardGameController: UIViewController {
                     flippedCards.first!.removeFromSuperview()
                     flippedCards.last!.removeFromSuperview()
                     flippedCards = []
+                    // проверяем окончание игры
+                    checkGameOver()
                 })
             } else {
                 // переворачиваем карточки рубашкой вверх
@@ -152,6 +165,22 @@ class BoardGameController: UIViewController {
                 }
             }
         }
+    }
+    
+    private func checkGameOver() {
+        guard boardGameView.subviews.count == 0 else { return }
+        let alertController = UIAlertController(title: "Game over", message: "You done \(flipsCount) flips", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "New game",
+                                                style: .default) { _ in
+            self.game = self.getNewGame()
+            let cards = self.getCardBy(modelData: self.game.cards)
+            self.placeCardsOnBoard(cards)
+            self.flipsCount = 0
+            self.title = "Flips: XXX"
+        })
+        alertController.addAction(UIAlertAction(title: "Cancel",
+                                                style: .cancel) { _ in })
+        self.present(alertController, animated: true, completion: nil)
     }
     
     private func getCardBy(modelData: [Card]) -> [UIView] {
@@ -197,15 +226,27 @@ class BoardGameController: UIViewController {
     override func loadView() {
         super.loadView()
         
-        view.addSubview(startButtonView)
-        view.addSubview(flipButtonView)
+        //view.addSubview(startButtonView)
+        //view.addSubview(flipButtonView)
         view.addSubview(boardGameView)
+        start()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Game"
+        title = "Flips: XXX"
         view.backgroundColor = .lightGray
+        navigationController?.navigationBar.prefersLargeTitles = false
+        let flipButton = UIBarButtonItem(image: UIImage(systemName: "doc.on.doc")!,
+                                          style: .plain,
+                                          target: self,
+                                          action: #selector(action))
+        navigationItem.rightBarButtonItem = flipButton
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+//        navigationController?.navigationBar.prefersLargeTitles = false
     }
     
     @objc
@@ -213,6 +254,29 @@ class BoardGameController: UIViewController {
         game = getNewGame()
         let cards = getCardBy(modelData: game.cards)
         placeCardsOnBoard(cards)
+    }
+    
+    @objc
+    func action() {
+        let flippedCount = (self.cardViews as! [FlippableView]).filter({ $0.isFlipped }).count
+        let isFlipped = flippedCount < self.cardViews.count
+        for card in self.cardViews {
+            (card as! FlippableView).isFlipped = isFlipped
+        }
+        self.flippedCards = []
+    }
+    
+    func start() {
+        let alertController = UIAlertController(title: "Continue previous game?", message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: "Cancel",
+                                                style: .cancel) { _ in
+            self.game = self.getNewGame()
+            let cards = self.getCardBy(modelData: self.game.cards)
+            self.placeCardsOnBoard(cards)
+        })
+        alertController.addAction(UIAlertAction(title: "OK",
+                                                style: .default) { _ in })
+        self.present(alertController, animated: true, completion: nil)
     }
 
 }
