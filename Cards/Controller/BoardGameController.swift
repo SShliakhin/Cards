@@ -37,7 +37,7 @@ class BoardGameController: UIViewController {
     }
     
     // количество переворотов
-    lazy var flipsCount = 0 {
+    var flipsCount = 0 {
         didSet {
             // запоминаем в моделе
             game.flipsCount = flipsCount
@@ -45,6 +45,8 @@ class BoardGameController: UIViewController {
             title = "Flips: \(flipsCount)"
         }
     }
+    
+    lazy var gameStorage: GameStorageProtocol = GameStorage()
     
     // MARK: - Life cycle
     
@@ -66,10 +68,6 @@ class BoardGameController: UIViewController {
         start()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
     // MARK: - Custom methods
     
     private func getBoardGameView() -> UIView {
@@ -80,9 +78,7 @@ class BoardGameController: UIViewController {
         boardView.frame.origin.x = margin
         let window = UIApplication.shared.windows[0]
         let topPadding = window.safeAreaInsets.top
-        //boardView.frame.origin.y = topPadding + startButtonView.frame.height + margin
-        boardView.frame.origin.y = //view.safeAreaInsets.top + margin
-            topPadding + (navigationController?.navigationBar.frame.height ?? 0) / 2 + margin
+        boardView.frame.origin.y = topPadding + (navigationController?.navigationBar.frame.height ?? 0) / 2 + margin
         
         // расчет ширины
         boardView.frame.size.width = UIScreen.main.bounds.width - margin * 2
@@ -98,34 +94,102 @@ class BoardGameController: UIViewController {
         return boardView
     }
     
-    private func getNewGame() -> Game {
+    private func getSettings() -> CardSettings {
+        let gameSettings = gameStorage.loadSettings().filter({$0.status})
+        var arrayShapes = [CardShape]()
+        var arrayColors = [CardColor]()
+        var arrayBacks = [CardBack]()
+        for setting in gameSettings {
+            switch setting.type {
+            case .back:
+                if let value = CardBack(rawValue: setting.title) {
+                    arrayBacks.append(value)
+                }
+            case .color:
+                if let value = CardColor(rawValue: setting.title) {
+                    arrayColors.append(value)
+                }
+            case .shape:
+                if let value = CardShape(rawValue: setting.title) {
+                    arrayShapes.append(value)
+                }
+            }
+        }
+        return (shapes: arrayShapes, colors: arrayColors, backs: arrayBacks)
+    }
+    
+    private func getNewGame(withNewCard isNew: Bool = true) -> Game {
         let game = Game()
         game.cardsCount = self.cardsPairsCounts
-        game.generateCards()
+        
+        if isNew {
+            //game.generateCards()
+            // на основании сохраненных настроек
+            let gameSettings: CardSettings = getSettings()
+            game.generateCardsBy(shapes: gameSettings.shapes, colors: gameSettings.colors, backs: gameSettings.backs)
+            gameStorage.saveCards(game.cards)
+        } else {
+            game.cards = gameStorage.loadCards()
+        }
+
         return game
     }
     
     private func start() {
+        
         let alertController = UIAlertController(title: "Continue previous game?", message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: "Cancel",
                                                 style: .cancel) { _ in
-            self.game = self.getNewGame()
-            let cards = self.getCardBy(modelData: self.game.cards)
-            self.placeCardsOnBoard(cards)
+            self.startNewGame()
+            
         })
         alertController.addAction(UIAlertAction(title: "OK",
-                                                style: .default) { _ in })
+                                                style: .default) { _ in
+            self.continueOldGame()
+        })
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    private func startNewGame() {
+        self.game = self.getNewGame()
+        let cards = self.getCardBy(modelData: self.game.cards)
+        self.placeCardsOnBoard(cards)
+        
+        // TO DO: - убрать отсюда
+        self.flipsCount = 0
+        title = "Flips: XXX"
+    }
+    
+    private func continueOldGame() {
+        game = getNewGame(withNewCard: false)
+        let cards = getCardBy(modelData: game.cards)
+
+        var coordinates = gameStorage.loadCardCoordinates()
+        for card in cardViews {
+            card.removeFromSuperview()
+        }
+        cardViews = cards
+        for card in cardViews {
+            if let index = coordinates.firstIndex(where: { $0.tag == card.tag }) {
+                card.frame.origin = CGPoint(x: coordinates[index].x, y: coordinates[index].y)
+                boardGameView.addSubview(card)
+                coordinates.remove(at: index)
+            }
+        }
+        
+        // TO DO: - убрать отсюда
+        self.flipsCount = 0
+        title = "Flips: XXX"
     }
     
     private func getCardBy(modelData: [Card]) -> [UIView] {
         var cardViews = [UIView]()
         let cardViewFactory = CardViewFactory()
         for (index, modelCard) in modelData.enumerated() {
-            let cardOne = cardViewFactory.get(modelCard.type, withSize: cardSize, andColor: modelCard.color)
+            let cardOne = cardViewFactory.get(modelCard.shape, withSize: cardSize, andColor: modelCard.color, andBack: modelCard.back)
             cardOne.tag = index
             cardViews.append(cardOne)
-            let cardTwo = cardViewFactory.get(modelCard.type, withSize: cardSize, andColor: modelCard.color)
+            let cardTwo = cardViewFactory.get(modelCard.shape, withSize: cardSize, andColor: modelCard.color, andBack: modelCard.back)
             cardTwo.tag = index
             cardViews.append(cardTwo)
         }
@@ -156,6 +220,7 @@ class BoardGameController: UIViewController {
             card.frame.origin = CGPoint(x: randomX, y: randomY)
             boardGameView.addSubview(card)
         }
+        saveGame()
     }
     
     private func addOrRemoveCard(_ card: FlippableView) {
@@ -197,23 +262,36 @@ class BoardGameController: UIViewController {
                     (card as! FlippableView).flip()
                 }
             }
+        } else {
+            saveGame()
         }
     }
     
     private func checkGameOver() {
-        guard boardGameView.subviews.count == 0 else { return }
+        guard boardGameView.subviews.count == 0 else {
+            // сохраняем состояние игры
+            saveGame()
+            return
+        }
         let alertController = UIAlertController(title: "Game over", message: "You done \(flipsCount) flips", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "New game",
                                                 style: .default) { _ in
-            self.game = self.getNewGame()
-            let cards = self.getCardBy(modelData: self.game.cards)
-            self.placeCardsOnBoard(cards)
-            self.flipsCount = 0
-            self.title = "Flips: XXX"
+            self.startNewGame()
         })
         alertController.addAction(UIAlertAction(title: "Cancel",
-                                                style: .cancel) { _ in })
+                                                style: .cancel) { _ in
+            self.saveGame()
+            self.navigationController?.popViewController(animated: true)
+        })
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    private func saveGame() {
+        var cardCoordinates = [CardCoordinate]()
+        for card in boardGameView.subviews {
+            cardCoordinates.append((tag: card.tag, x: Int(card.frame.origin.x), y: Int(card.frame.origin.y)))
+        }
+        gameStorage.saveCardCoordinates(cardCoordinates)
     }
     
     // MARK: - Actions

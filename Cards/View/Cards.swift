@@ -17,6 +17,7 @@ protocol FlippableView: UIView {
 class CardView <ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
     // цвет фигуры
     var color: UIColor!
+    var back: CardBack!
     // радиус закругления бордюра
     var cornerRadius = 20
     
@@ -89,9 +90,10 @@ class CardView <ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
     }
     
     // инициализация
-    init(frame: CGRect, color: UIColor) {
+    init(frame: CGRect, color: UIColor, back: CardBack) {
         super.init(frame: frame)
         self.color = color
+        self.back = back
         
         setupBorders()
     }
@@ -123,16 +125,15 @@ class CardView <ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
         let view = UIView(frame: self.bounds)
         view.backgroundColor = .white
         
-        // выбор случайного узора для рубашки
-        switch ["cicle", "line"].randomElement() {
-        case "cicle":
+        switch back {
+        case .circle:
             let layer = BackSideCircle(size: self.bounds.size, fillColor: UIColor.black.cgColor)
             view.layer.addSublayer(layer)
-        case "line":
+        case .line:
             let layer = BackSideLine(size: self.bounds.size, fillColor: UIColor.black.cgColor)
             view.layer.addSublayer(layer)
-        default:
-            break
+        case .none:
+            fatalError(#function)
         }
         
         // скругляем углы корневого слоя

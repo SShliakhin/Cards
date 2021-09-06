@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A5430F026CE6C3700FE542F /* GameStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5430EF26CE6C3700FE542F /* GameStorage.swift */; };
+		5A5430F226D1515A00FE542F /* ShapeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5430F126D1515A00FE542F /* ShapeTableViewCell.swift */; };
+		5A5430F426D15CB700FE542F /* BackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5430F326D15CB700FE542F /* BackTableViewCell.swift */; };
+		5ABF3F1D26DBEADC000B4DDE /* CommonFuncs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABF3F1C26DBEADC000B4DDE /* CommonFuncs.swift */; };
 		5ADD08CA26BEC93B00EF404E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADD08C926BEC93B00EF404E /* AppDelegate.swift */; };
 		5ADD08CC26BEC93B00EF404E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADD08CB26BEC93B00EF404E /* SceneDelegate.swift */; };
 		5ADD08D326BEC93B00EF404E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5ADD08D226BEC93B00EF404E /* Assets.xcassets */; };
@@ -22,14 +26,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5A60B06A26CBD896004ED56A /* StartScreenExperements.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = StartScreenExperements.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		5A5430EF26CE6C3700FE542F /* GameStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStorage.swift; sourceTree = "<group>"; };
+		5A5430F126D1515A00FE542F /* ShapeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeTableViewCell.swift; sourceTree = "<group>"; };
+		5A5430F326D15CB700FE542F /* BackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackTableViewCell.swift; sourceTree = "<group>"; };
+		5ABF3F1C26DBEADC000B4DDE /* CommonFuncs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonFuncs.swift; sourceTree = "<group>"; };
 		5ADD08C626BEC93B00EF404E /* Cards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5ADD08C926BEC93B00EF404E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5ADD08CB26BEC93B00EF404E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		5ADD08D226BEC93B00EF404E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5ADD08D526BEC93B00EF404E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5ADD08D726BEC93B00EF404E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5ADD08DE26C1505F00EF404E /* BezierExperiments.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = BezierExperiments.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5ADD08E126C5504100EF404E /* Shapes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shapes.swift; sourceTree = "<group>"; };
 		5ADD08E326C5506600EF404E /* Cards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cards.swift; sourceTree = "<group>"; };
 		5ADD08E926C5566500EF404E /* BoardGameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardGameController.swift; sourceTree = "<group>"; };
@@ -87,6 +93,8 @@
 				5ADD08E626C5545300EF404E /* Storyboards */,
 				5ADD08E126C5504100EF404E /* Shapes.swift */,
 				5ADD08E326C5506600EF404E /* Cards.swift */,
+				5A5430F126D1515A00FE542F /* ShapeTableViewCell.swift */,
+				5A5430F326D15CB700FE542F /* BackTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -94,10 +102,8 @@
 		5ADD08E526C5544100EF404E /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				5ADD08DE26C1505F00EF404E /* BezierExperiments.playground */,
 				5ADD08C926BEC93B00EF404E /* AppDelegate.swift */,
 				5ADD08CB26BEC93B00EF404E /* SceneDelegate.swift */,
-				5A60B06A26CBD896004ED56A /* StartScreenExperements.playground */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -124,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				5ADD08EC26C55F1700EF404E /* Card.swift */,
+				5A5430EF26CE6C3700FE542F /* GameStorage.swift */,
 				5ADD08EE26C5608C00EF404E /* Game.swift */,
 			);
 			path = Model;
@@ -133,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				5ADD08F226C5AFA500EF404E /* CardViewFactory.swift */,
+				5ABF3F1C26DBEADC000B4DDE /* CommonFuncs.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -216,6 +224,9 @@
 			files = (
 				5ADD08EA26C5566500EF404E /* BoardGameController.swift in Sources */,
 				5ADD08ED26C55F1700EF404E /* Card.swift in Sources */,
+				5A5430F026CE6C3700FE542F /* GameStorage.swift in Sources */,
+				5A5430F226D1515A00FE542F /* ShapeTableViewCell.swift in Sources */,
+				5A5430F426D15CB700FE542F /* BackTableViewCell.swift in Sources */,
 				5ADD08F526C93E8F00EF404E /* StartController.swift in Sources */,
 				5ADD08EF26C5608C00EF404E /* Game.swift in Sources */,
 				5ADD08E426C5506600EF404E /* Cards.swift in Sources */,
@@ -223,6 +234,7 @@
 				5ADD08F726C96BD300EF404E /* SettingsController.swift in Sources */,
 				5ADD08F326C5AFA500EF404E /* CardViewFactory.swift in Sources */,
 				5ADD08CC26BEC93B00EF404E /* SceneDelegate.swift in Sources */,
+				5ABF3F1D26DBEADC000B4DDE /* CommonFuncs.swift in Sources */,
 				5ADD08E226C5504100EF404E /* Shapes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

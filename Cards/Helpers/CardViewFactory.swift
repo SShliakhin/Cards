@@ -8,7 +8,7 @@
 import UIKit
 
 class CardViewFactory {
-    func get(_ shape: CardType, withSize size: CGSize, andColor color: CardColor) -> UIView {
+    func get(_ shape: CardShape, withSize size: CGSize, andColor color: CardColor, andBack back: CardBack) -> UIView {
         // на основе размера определяем фрейм
         let frame = CGRect(origin: .zero, size: size)
         // определяем UI - цвет на основе цвета модели
@@ -17,15 +17,15 @@ class CardViewFactory {
         // генерируем и возвращаем карточку
         switch shape {
         case .circle:
-            return CardView<CircleShape>(frame: frame, color: viewColor)
+            return CardView<CircleShape>(frame: frame, color: viewColor, back: back)
         case .cross:
-            return CardView<CrossShape>(frame: frame, color: viewColor)
+            return CardView<CrossShape>(frame: frame, color: viewColor, back: back)
         case .square:
-            return CardView<SquareShape>(frame: frame, color: viewColor)
+            return CardView<SquareShape>(frame: frame, color: viewColor, back: back)
         case .fill:
-            return CardView<FillShape>(frame: frame, color: viewColor)
-        case .unpaintedCicle:
-            return CardView<UnpaintedCircleShape>(frame: frame, color: viewColor)
+            return CardView<FillShape>(frame: frame, color: viewColor, back: back)
+        case .unpaintedCircle:
+            return CardView<UnpaintedCircleShape>(frame: frame, color: viewColor, back: back)
         }
     }
     

@@ -115,8 +115,8 @@ class StartController: UIViewController {
         
         // создаем новые карточки
         let cardViewFactory = CardViewFactory()
-        let cardOne = cardViewFactory.get(CardType.circle , withSize: CGSize(width: widthCard, height: heightCard), andColor: CardColor.green)
-        let cardTwo = cardViewFactory.get(CardType.square , withSize: CGSize(width: widthCard, height: heightCard), andColor: CardColor.red)
+        let cardOne = cardViewFactory.get(CardShape.circle , withSize: CGSize(width: widthCard, height: heightCard), andColor: CardColor.green, andBack: CardBack.circle)
+        let cardTwo = cardViewFactory.get(CardShape.square , withSize: CGSize(width: widthCard, height: heightCard), andColor: CardColor.red, andBack: CardBack.line)
         // добавляем на поле
         miniBoardGameView.addSubview(cardOne)
         miniBoardGameView.addSubview(cardTwo)
