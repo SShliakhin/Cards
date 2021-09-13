@@ -36,7 +36,7 @@ enum CardBack: String, CaseIterable {
 // игральная карточка
 typealias Card = (shape: CardShape, color: CardColor, back: CardBack)
 // игральная карточка на игровом поле
-typealias CardCoordinate = (tag: Int, x: Int, y: Int)
+typealias CardCoordinate = (tag: Int, x: Int, y: Int, flipped: Int)
 // настройки для создания карточек
 typealias CardSettings = (shapes: [CardShape], colors: [CardColor], backs: [CardBack])
 
@@ -57,6 +57,7 @@ enum CoordinateKey: String {
     case tag
     case x
     case y 
+    case flipped
 }
 
 protocol SettingsProtocol {

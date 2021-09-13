@@ -96,10 +96,11 @@ class GameStorage: GameStorageProtocol {
         for coordinate in cardCoordinatesFromStorage {
             guard let tag = coordinate[CoordinateKey.tag.rawValue],
                   let x = coordinate[CoordinateKey.x.rawValue],
-                  let y = coordinate[CoordinateKey.y.rawValue] else {
+                  let y = coordinate[CoordinateKey.y.rawValue],
+                  let flipped = coordinate[CoordinateKey.flipped.rawValue] else {
                 continue
             }
-            result.append((tag: tag, x: x, y: y))
+            result.append((tag: tag, x: x, y: y, flipped: flipped))
         }
         return result
     }
@@ -111,6 +112,7 @@ class GameStorage: GameStorageProtocol {
             newElementForStorage[CoordinateKey.tag.rawValue] = coordinate.tag
             newElementForStorage[CoordinateKey.x.rawValue] = coordinate.x
             newElementForStorage[CoordinateKey.y.rawValue] = coordinate.y
+            newElementForStorage[CoordinateKey.flipped.rawValue] = coordinate.flipped
             
             arrayForStorage.append(newElementForStorage)
         }

@@ -173,6 +173,7 @@ class BoardGameController: UIViewController {
             if let index = coordinates.firstIndex(where: { $0.tag == card.tag }) {
                 card.frame.origin = CGPoint(x: coordinates[index].x, y: coordinates[index].y)
                 boardGameView.addSubview(card)
+                (card as! FlippableView).isFlipped = coordinates[index].flipped == 1 ? true : false
                 coordinates.remove(at: index)
             }
         }
@@ -289,7 +290,7 @@ class BoardGameController: UIViewController {
     private func saveGame() {
         var cardCoordinates = [CardCoordinate]()
         for card in boardGameView.subviews {
-            cardCoordinates.append((tag: card.tag, x: Int(card.frame.origin.x), y: Int(card.frame.origin.y)))
+            cardCoordinates.append((tag: card.tag, x: Int(card.frame.origin.x), y: Int(card.frame.origin.y), flipped: (card as! FlippableView).isFlipped ? 1 : 0))
         }
         gameStorage.saveCardCoordinates(cardCoordinates)
     }
