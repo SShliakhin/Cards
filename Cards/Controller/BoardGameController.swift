@@ -185,7 +185,9 @@ class BoardGameController: UIViewController {
         // если перевернута только одна карточка, то помещаем ее в массив flippedCards
         let flippedCards = (self.boardGameView.subviews as! [FlippableView]).filter{$0.isFlipped}
         if flippedCards.count == 1 {
-            self.flippedCards.append(flippedCards.first!)
+            let card = flippedCards.first!
+            self.flippedCards.append(card)
+            card.superview?.bringSubviewToFront(card)
         }
         
         self.flipsCount = gameStorage.loadFlipsCount()
