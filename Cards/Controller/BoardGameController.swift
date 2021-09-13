@@ -299,9 +299,9 @@ class BoardGameController: UIViewController {
     
     @objc
     private func actionAllFlip() {
-        let flippedCount = (self.cardViews as! [FlippableView]).filter({ $0.isFlipped }).count
-        let isFlipped = flippedCount < self.cardViews.count
-        for card in self.cardViews {
+        let flippedCount = (self.boardGameView.subviews as! [FlippableView]).filter({ $0.isFlipped}).count
+        let isFlipped = flippedCount < self.boardGameView.subviews.count
+        for card in self.boardGameView.subviews {
             (card as! FlippableView).isFlipped = isFlipped
         }
         self.flippedCards = []
