@@ -65,7 +65,13 @@ class BoardGameController: UIViewController {
                                           target: self,
                                           action: #selector(actionAllFlip))
         navigationItem.rightBarButtonItem = flipButton
-        start()
+        
+        let flipsCount = gameStorage.loadFlipsCount()
+        if flipsCount > 0 {
+            start()
+        } else {
+            startNewGame()
+        }
     }
     
     // MARK: - Custom methods
@@ -155,9 +161,7 @@ class BoardGameController: UIViewController {
         let cards = self.getCardBy(modelData: self.game.cards)
         self.placeCardsOnBoard(cards)
         
-        // TO DO: - убрать отсюда
         self.flipsCount = 0
-        title = "Flips: XXX"
     }
     
     private func continueOldGame() {
@@ -184,9 +188,7 @@ class BoardGameController: UIViewController {
             self.flippedCards.append(flippedCards.first!)
         }
         
-        // TO DO: - убрать отсюда
-        self.flipsCount = 0
-        title = "Flips: XXX"
+        self.flipsCount = gameStorage.loadFlipsCount()
     }
     
     private func getCardBy(modelData: [Card]) -> [UIView] {
@@ -299,6 +301,7 @@ class BoardGameController: UIViewController {
             cardCoordinates.append((tag: card.tag, x: Int(card.frame.origin.x), y: Int(card.frame.origin.y), flipped: (card as! FlippableView).isFlipped ? 1 : 0))
         }
         gameStorage.saveCardCoordinates(cardCoordinates)
+        gameStorage.saveFlipsCount(flipsCount)
     }
     
     // MARK: - Actions
