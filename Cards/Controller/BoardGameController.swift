@@ -290,7 +290,7 @@ class BoardGameController: UIViewController {
         })
         alertController.addAction(UIAlertAction(title: "Cancel",
                                                 style: .cancel) { _ in
-            self.saveGame()
+            self.resetGame()
             self.navigationController?.popViewController(animated: true)
         })
         self.present(alertController, animated: true, completion: nil)
@@ -303,6 +303,12 @@ class BoardGameController: UIViewController {
         }
         gameStorage.saveCardCoordinates(cardCoordinates)
         gameStorage.saveFlipsCount(flipsCount)
+    }
+    
+    private func resetGame() {
+        gameStorage.saveCards([Card]())
+        gameStorage.saveCardCoordinates([CardCoordinate]())
+        gameStorage.saveFlipsCount(0)
     }
     
     // MARK: - Actions
