@@ -43,6 +43,6 @@ class Game {
     }
     
     func checkCards(_ firstCard: Card, _ secondCard: Card) -> Bool {
-        return firstCard == secondCard
+        return firstCard.color == secondCard.color && firstCard.shape == secondCard.shape
     }
 }
