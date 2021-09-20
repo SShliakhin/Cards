@@ -35,7 +35,44 @@ class SettingsController: UIViewController {
         return table
     }()
     
+    private var numberOfPairsOfCards = getDefaultNumberOfPairsOfCards() {
+        didSet {
+            numberOfPairsLabel.text = "\(numberOfPairsOfCards) Pairs of cards"
+            settingsStorage.saveNumberOfPairsOfCards(numberOfPairsOfCards)
+        }
+    }
     
+    lazy var numberOfPairsLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "X Pairs of cards"
+        return label
+    }()
+    
+    lazy var stepperForPairs: UIStepper = {
+        let stepper = UIStepper(frame: .zero)
+        stepper.translatesAutoresizingMaskIntoConstraints = false
+        stepper.value = Double(settingsStorage.loadNumberOfPairsOfCards())
+        stepper.minimumValue = 1
+        stepper.maximumValue = 20
+        stepper.stepValue = 1
+        stepper.wraps = true
+        stepper.autorepeat = true
+        stepper.sizeToFit()
+        let newValue = UIAction(handler: { _ in
+            self.numberOfPairsOfCards = Int(stepper.value)
+        })
+        stepper.addAction(newValue, for: .valueChanged)
+        return stepper
+    }()
+    
+    lazy var numberOfPairsStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [numberOfPairsLabel, stepperForPairs])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.spacing = UIStackView.spacingUseSystem
+        return stackView
+    }()
     
     // порядок отображения секций по типам
     // индекс в массиве соответствует индексу секции в таблице
@@ -50,6 +87,7 @@ class SettingsController: UIViewController {
 
         setupViews()
         setSettings(settingsStorage.loadSettings())
+        numberOfPairsOfCards = settingsStorage.loadNumberOfPairsOfCards()
     }
     
     // MARK: - Custom methods
@@ -64,11 +102,16 @@ class SettingsController: UIViewController {
     }
     
     private func setupViews() {
+        view.addSubview(numberOfPairsStackView)
         view.addSubview(tableView)
         let constraints = [
+            numberOfPairsStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+            numberOfPairsStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
+            numberOfPairsStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
+            
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.topAnchor.constraint(equalTo: numberOfPairsStackView.bottomAnchor, constant: 8),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ]
         NSLayoutConstraint.activate(constraints)

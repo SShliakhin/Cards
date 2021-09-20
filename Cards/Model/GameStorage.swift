@@ -16,6 +16,8 @@ protocol GameStorageProtocol {
     func saveCardCoordinates(_ cards: [CardCoordinate])
     func loadFlipsCount() -> Int
     func saveFlipsCount(_ count: Int)
+    func loadNumberOfPairsOfCards() -> Int
+    func saveNumberOfPairsOfCards(_ number: Int)
 }
 
 class GameStorage: GameStorageProtocol {
@@ -26,6 +28,7 @@ class GameStorage: GameStorageProtocol {
     var storageCardsKey: String = "cards"
     var storageCardCoordinatesKey: String = "cardCoordinates"
     var storageFlipsCount: String = "flipsCount"
+    var storageNumberOfPairsOfCardsKey: String = "numberOfPairs"
     
     func loadSettings() -> [SettingsProtocol] {
         var result: [SettingsProtocol] = []
@@ -130,4 +133,16 @@ class GameStorage: GameStorageProtocol {
         storage.set(count, forKey: storageFlipsCount)
     }
     
+    func loadNumberOfPairsOfCards() -> Int {
+        let number = storage.integer(forKey: storageNumberOfPairsOfCardsKey)
+        if number != 0 {
+            return number
+        } else {
+            return getDefaultNumberOfPairsOfCards()
+        }
+    }
+    
+    func saveNumberOfPairsOfCards(_ number: Int) {
+        storage.set(number, forKey: storageNumberOfPairsOfCardsKey)
+    }
 }

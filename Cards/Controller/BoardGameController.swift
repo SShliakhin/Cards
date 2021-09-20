@@ -11,8 +11,6 @@ class BoardGameController: UIViewController {
 
     // MARK: - Properties
     
-    // количество пар уникальных карточек
-    var cardsPairsCounts = 8
     // сущность "Игра"
     lazy var game: Game = getNewGame()
     
@@ -126,16 +124,17 @@ class BoardGameController: UIViewController {
     
     private func getNewGame(withNewCard isNew: Bool = true) -> Game {
         let game = Game()
-        game.cardsCount = self.cardsPairsCounts
         
         if isNew {
             //game.generateCards()
             // на основании сохраненных настроек
+            game.cardsCount = gameStorage.loadNumberOfPairsOfCards()
             let gameSettings: CardSettings = getSettings()
             game.generateCardsBy(shapes: gameSettings.shapes, colors: gameSettings.colors, backs: gameSettings.backs)
             gameStorage.saveCards(game.cards)
         } else {
             game.cards = gameStorage.loadCards()
+            game.cardsCount = game.cards.count
         }
 
         return game

@@ -21,6 +21,10 @@ func loadDefaultSettings() -> [SettingsProtocol]{
     return result
 }
 
+func getDefaultNumberOfPairsOfCards() -> Int {
+    return 8
+}
+
 func getColorByText(_ colorText: String) -> UIColor {
     switch colorText {
     case "black":
