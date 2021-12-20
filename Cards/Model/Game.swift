@@ -18,7 +18,7 @@ class Game {
     var cards = [Card]()
     // количество переворотов
     var flipsCount = 0
-    
+
     // генерация массива случайных карт
     func generateCards() {
         var cards = [Card]()
@@ -30,7 +30,7 @@ class Game {
         }
         self.cards = cards
     }
-    
+
     func generateCardsBy(shapes: [CardShape], colors: [CardColor], backs: [CardBack]) {
         var cards = [Card]()
         for _ in 0..<cardsCount {
@@ -41,7 +41,7 @@ class Game {
         }
         self.cards = cards
     }
-    
+
     func checkCards(_ firstCard: Card, _ secondCard: Card) -> Bool {
         return firstCard.color == secondCard.color && firstCard.shape == secondCard.shape
     }

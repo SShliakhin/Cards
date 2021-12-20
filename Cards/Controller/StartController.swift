@@ -11,7 +11,7 @@ class StartController: UIViewController {
     
     // MARK: - Properties
 
-    lazy var startButtonView : UIButton = {
+    lazy var startButtonView: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Начать игру", for: .normal)
@@ -22,7 +22,7 @@ class StartController: UIViewController {
         }), for: .touchUpInside)
         return button
     }()
-    lazy var settingsButtonView : UIButton = {
+    lazy var settingsButtonView: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Настройки", for: .normal)
@@ -34,7 +34,7 @@ class StartController: UIViewController {
         return button
     }()
     
-    lazy var miniBoardGameView : UIView = {
+    lazy var miniBoardGameView: UIView = {
         let board = UIView()
         board.translatesAutoresizingMaskIntoConstraints = false
         board.backgroundColor = .lightGray
@@ -66,7 +66,7 @@ class StartController: UIViewController {
         setupCards()
     }
     
-    // MARK: -  Custom methods
+    // MARK: - Custom methods
     
     private func setupViews() {
         view.addSubview(startButtonView)
@@ -87,7 +87,10 @@ class StartController: UIViewController {
             
             miniBoardGameView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
             miniBoardGameView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            miniBoardGameView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            miniBoardGameView.trailingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                constant: -10
+            ),
             
             settingsButtonView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20 ),
             startButtonView.bottomAnchor.constraint(equalTo: settingsButtonView.topAnchor, constant: -10),
@@ -108,15 +111,25 @@ class StartController: UIViewController {
         
         // размеры изменились
         // удаляем старые карточки
-        cardViews.forEach{ card in
+        cardViews.forEach { card in
             card.removeFromSuperview()
         }
         cardViews = []
         
         // создаем новые карточки
         let cardViewFactory = CardViewFactory()
-        let cardOne = cardViewFactory.get(CardShape.circle , withSize: CGSize(width: widthCard, height: heightCard), andColor: CardColor.green, andBack: CardBack.circle)
-        let cardTwo = cardViewFactory.get(CardShape.square , withSize: CGSize(width: widthCard, height: heightCard), andColor: CardColor.red, andBack: CardBack.line)
+        let cardOne = cardViewFactory.get(
+            CardShape.circle,
+            withSize: CGSize(width: widthCard, height: heightCard),
+            andColor: CardColor.green,
+            andBack: CardBack.circle
+        )
+        let cardTwo = cardViewFactory.get(
+            CardShape.square,
+            withSize: CGSize(width: widthCard, height: heightCard),
+            andColor: CardColor.red,
+            andBack: CardBack.line
+        )
         // добавляем на поле
         miniBoardGameView.addSubview(cardOne)
         miniBoardGameView.addSubview(cardTwo)

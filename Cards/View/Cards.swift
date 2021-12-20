@@ -46,9 +46,15 @@ class CardView <ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
         let fromView = isFlipped ? frontSideView : backSideView
         let toView = isFlipped ? backSideView : frontSideView
         // запускаем анимированный переход
-        UIView.transition(from: fromView, to: toView, duration: 0.5, options: [.transitionFlipFromTop], completion: { _ in
-            self.flipCompletionHandler?(self)
-        })
+        UIView.transition(
+            from: fromView,
+            to: toView,
+            duration: 0.5,
+            options: [.transitionFlipFromTop],
+            completion: { _ in
+                self.flipCompletionHandler?(self)
+            }
+        )
         isFlipped = !isFlipped
     }
     

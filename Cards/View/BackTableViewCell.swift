@@ -11,7 +11,7 @@ class BackTableViewCell: UITableViewCell {
     
     static let identifier = String(describing: BackTableViewCell.self)
     
-    var setting : SettingsProtocol? {
+    var setting: SettingsProtocol? {
         didSet {
             if let title = setting?.title {
                 contentView.layer.sublayers?.removeAll()

@@ -40,7 +40,6 @@ class GameStorage: GameStorageProtocol {
                   let type = SettingsType(rawValue: typeRaw) else {
                 continue
             }
-            //let type = SettingsType(rawValue: typeRaw) //getTypeByText(typeRaw)
             let status = statusRaw == "true" ? true : false
             
             result.append(SettingsRecord(title: title, type: type, status: status))

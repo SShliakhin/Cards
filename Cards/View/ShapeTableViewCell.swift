@@ -11,7 +11,7 @@ class ShapeTableViewCell: UITableViewCell {
 
     static let identifier = String(describing: ShapeTableViewCell.self)
     
-    var setting : SettingsProtocol? {
+    var setting: SettingsProtocol? {
         didSet {
             if let status = setting?.status {
                 selectedIndicatorView.backgroundColor = status ? .green : .white
@@ -23,21 +23,21 @@ class ShapeTableViewCell: UITableViewCell {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
-    } ()
+    }()
     
     lazy var leftView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isOpaque = false
         return view
-    } ()
+    }()
     
     lazy var rightView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isOpaque = false
         return view
-    } ()
+    }()
     
     lazy var shapeView: UIView = {
         let view = UIView(frame: CGRect(origin: .zero, size: frame.size))
@@ -48,7 +48,7 @@ class ShapeTableViewCell: UITableViewCell {
         view.layer.masksToBounds = true
         view.layer.cornerRadius = 5
         return view
-    } ()
+    }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -126,29 +126,3 @@ class ShapeTableViewCell: UITableViewCell {
     }
 
 }
-
-//    override func updateConfiguration(using state: UICellConfigurationState) {
-//        super.updateConfiguration(using: state)
-//
-//        var contentConfig = defaultContentConfiguration().updated(for: state)
-//        contentConfig.text = "Hello World"
-//        contentConfig.image = UIImage(systemName: "bell")
-//
-//        var backgroundConfig = backgroundConfiguration?.updated(for: state)
-//        backgroundConfig?.backgroundColor = .purple
-//
-//        if state.isHighlighted || state.isSelected {
-//            backgroundConfig?.backgroundColor = .orange
-//            contentConfig.textProperties.color = .red
-//            contentConfig.imageProperties.tintColor = .yellow
-//        }
-//
-//        contentConfiguration = contentConfig
-//        backgroundConfiguration = backgroundConfig
-//    }
-
-    
-    // при регистрации ячейки
-    //table.register(ShapeTableViewCell.self, forCellReuseIdentifier: ShapeTableViewCell.identifier)
-    // при получении ячейки для переконфигурирования
-    // let cell = tableView.dequeueReusableCell( withIdentifier: ShapeTableViewCell.identifier, for: indexPath) as? ShapeTableViewCell ?? UITableViewCell()

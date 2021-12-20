@@ -11,7 +11,7 @@ class SettingsController: UIViewController {
 
     // MARK: - Properties
     var settingsStorage: GameStorageProtocol = GameStorage()
-    
+
     var settingsRecords: [SettingsType: [SettingsProtocol]] = [:] {
         didSet {
             var savingArray: [SettingsProtocol] = []
@@ -21,7 +21,7 @@ class SettingsController: UIViewController {
             settingsStorage.saveSettings(savingArray)
         }
     }
-    
+
     lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .plain)
         table.translatesAutoresizingMaskIntoConstraints = false
@@ -34,21 +34,21 @@ class SettingsController: UIViewController {
         table.register(ShapeTableViewCell.self, forCellReuseIdentifier: ShapeTableViewCell.identifier)
         return table
     }()
-    
+
     private var numberOfPairsOfCards = getDefaultNumberOfPairsOfCards() {
         didSet {
             numberOfPairsLabel.text = "\(numberOfPairsOfCards) Pairs of cards"
             settingsStorage.saveNumberOfPairsOfCards(numberOfPairsOfCards)
         }
     }
-    
+
     lazy var numberOfPairsLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "X Pairs of cards"
         return label
     }()
-    
+
     lazy var stepperForPairs: UIStepper = {
         let stepper = UIStepper(frame: .zero)
         stepper.translatesAutoresizingMaskIntoConstraints = false
@@ -65,7 +65,7 @@ class SettingsController: UIViewController {
         stepper.addAction(newValue, for: .valueChanged)
         return stepper
     }()
-    
+
     lazy var numberOfPairsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [numberOfPairsLabel, stepperForPairs])
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -73,13 +73,13 @@ class SettingsController: UIViewController {
         stackView.spacing = UIStackView.spacingUseSystem
         return stackView
     }()
-    
+
     // порядок отображения секций по типам
     // индекс в массиве соответствует индексу секции в таблице
     var sectionsPosition: [SettingsType] = [.back, .shape, .color]
-    
+
     // MARK: - Life cycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Settings"
@@ -89,9 +89,9 @@ class SettingsController: UIViewController {
         setSettings(settingsStorage.loadSettings())
         numberOfPairsOfCards = settingsStorage.loadNumberOfPairsOfCards()
     }
-    
+
     // MARK: - Custom methods
-    
+
     func setSettings(_ settingsCollection: [SettingsProtocol]) {
         sectionsPosition.forEach { settingType in
             settingsRecords[settingType] = []
@@ -100,7 +100,7 @@ class SettingsController: UIViewController {
             settingsRecords[setting.type]?.append(setting)
         }
     }
-    
+
     private func setupViews() {
         view.addSubview(numberOfPairsStackView)
         view.addSubview(tableView)
@@ -108,7 +108,7 @@ class SettingsController: UIViewController {
             numberOfPairsStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
             numberOfPairsStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
             numberOfPairsStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
-            
+
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.topAnchor.constraint(equalTo: numberOfPairsStackView.bottomAnchor, constant: 8),
@@ -116,7 +116,7 @@ class SettingsController: UIViewController {
         ]
         NSLayoutConstraint.activate(constraints)
     }
-    
+
     private func configureColorCell(_ cell: UITableViewCell, by setting: SettingsProtocol) {
         let title = setting.title
         var content = cell.defaultContentConfiguration()
@@ -131,7 +131,7 @@ class SettingsController: UIViewController {
 }
 
 extension SettingsController: UITableViewDataSource {
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return settingsRecords.count
     }
@@ -142,7 +142,7 @@ extension SettingsController: UITableViewDataSource {
         let settingsType = sectionsPosition[section]
         return settingsRecords[settingsType]?.count ?? 0
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let section = sectionsPosition[indexPath.section]
         switch section {
@@ -152,26 +152,35 @@ extension SettingsController: UITableViewDataSource {
             return 44.0
         }
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+
         let section = sectionsPosition[indexPath.section]
         let currentSetting = settingsRecords[section]![indexPath.row]
-        
+
         switch section {
         case .back:
-            let cell = tableView.dequeueReusableCell(withIdentifier: BackTableViewCell.identifier, for: indexPath) as! BackTableViewCell
-            cell.setting = currentSetting
-            return cell
+            if let cell = tableView.dequeueReusableCell(
+                withIdentifier: BackTableViewCell.identifier,
+                for: indexPath
+            ) as? BackTableViewCell {
+                cell.setting = currentSetting
+                return cell
+            }
         case .shape:
-            let cell = tableView.dequeueReusableCell(withIdentifier: ShapeTableViewCell.identifier, for: indexPath) as! ShapeTableViewCell
-            cell.setting = currentSetting
-            return cell
+            if let cell = tableView.dequeueReusableCell(
+                withIdentifier: ShapeTableViewCell.identifier,
+                for: indexPath
+            ) as? ShapeTableViewCell {
+                cell.setting = currentSetting
+                return cell
+            }
         case .color:
             let cell = tableView.dequeueReusableCell(withIdentifier: "ColorCell", for: indexPath)
             configureColorCell(cell, by: currentSetting)
             return cell
         }
+        return UITableViewCell()
     }
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         var title: String?
@@ -191,10 +200,8 @@ extension SettingsController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = sectionsPosition[indexPath.section]
         settingsRecords[section]![indexPath.row].status.toggle()
-        //tableView.reloadRows(at: [indexPath], with: .automatic)
-        tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
+        tableView.reloadSections([indexPath.section], with: .automatic)
+        // tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
         tableView.deselectRow(at: indexPath, animated: true)
-        
     }
 }
-

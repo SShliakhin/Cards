@@ -7,7 +7,7 @@
 
 import UIKit
 
-func loadDefaultSettings() -> [SettingsProtocol]{
+func loadDefaultSettings() -> [SettingsProtocol] {
     var result: [SettingsProtocol] = []
     for type in CardShape.allCases {
         result.append(SettingsRecord(title: String(describing: type), type: .shape, status: false))
@@ -51,4 +51,3 @@ func getColorByText(_ colorText: String) -> UIColor {
 func getSymbolForSelect(with status: Bool) -> String {
     return status ? "\u{25C9}" : "\u{25CB}"
 }
-

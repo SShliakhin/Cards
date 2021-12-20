@@ -156,7 +156,13 @@ class BackSideCircle: CAShapeLayer, ShapeLayerProtocol {
             // очередной радиус
             let radius = Int.random(in: 5...15)
             // рисуем круг
-            path.addArc(withCenter: CGPoint(x: randomX, y: randomY), radius: CGFloat(radius), startAngle: 0, endAngle: .pi * 2, clockwise: true)
+            path.addArc(
+                withCenter: CGPoint(x: randomX, y: randomY),
+                radius: CGFloat(radius),
+                startAngle: 0,
+                endAngle: .pi * 2,
+                clockwise: true
+            )
         }
         // инициализируем созданный путь
         self.path = path.cgPath
@@ -196,7 +202,6 @@ class BackSideLine: CAShapeLayer, ShapeLayerProtocol {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
 
 extension ShapeLayerProtocol {
     // нельзя использовать пустой инициализатор
